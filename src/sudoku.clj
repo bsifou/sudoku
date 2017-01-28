@@ -182,12 +182,67 @@
 (defn find-empty-point [board]
   (some #(and (zero? (value-at  sudoku-board-1 %)) %) (coord-pairs (range 0 9))))
 
+;; (defn solve [board]
+;;   nil)
+;; (defn subset-sum-helper [a-set current-set target]
+;;   (if (= (sum current-set) target)
+;;     [current-set]
+;;     (let [remaining (clojure.set/difference a-set current-set)]
+;;       (for [elem remaining
+;;             solution (subset-sum-helper a-set
+;;                                         (conj current-set elem)
+;;                                         target)]
+;;         solution))))
+
+;; (defn solve-helper [board]
+;;   (if (filled? board)
+;;     (if (valid-solution? board)
+;;       [board]
+;;       [])
+;;     (let [pos (find-empty-point board)]
+;;       (for [vval (vec (valid-values-for board pos))
+;;             solution (solve-helper (set-value-at board pos vval))]
+;;         solution))))
+
+;; (defn solve [board]
+;;   (if (filled? board)
+;;     (if (valid-solution? board)
+;;       [board]
+;;       [])
+;;     (for [valid-value (valid-values-for board (find-empty-point board))
+;;           solution (solve (set-value-at board (find-empty-point board) valid-value))]
+;;       solution)))
+
+
+
 (defn solve [board]
-  nil)
-
-
+  (if (and (filled? board)(valid-solution? board))
+    [board]
+    (let [coords (find-empty-point board)]
+      (for [possible-item (valid-values-for board coords)
+            :let [next-board (set-value-at board coords possible-item)]
+            solution (solve next-board)]
+        solution))))
 ;-----------------------------------------
 
 ;; (defn block-values [board coords]
 ;;   (set(map (fn [args] (value-at board args))
 ;;            (block-pairs coords))))
+
+
+;; (defn sum [a-seq]
+;;   (reduce + a-seq))
+
+
+;; (defn subset-sum [a-set target]
+;;   (subset-sum-helper a-set #{} target))
+
+
+
+
+
+
+
+
+
+
